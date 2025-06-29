@@ -10,3 +10,7 @@ COPY ./requirements.txt /code
 RUN pip install --upgrade pip && pip install --no-cache-dir -r requirements.txt
 
 COPY . /code
+
+EXPOSE 8000
+
+CMD ["sleep", "infinity"]
