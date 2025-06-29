@@ -1,0 +1,38 @@
+version: '3'
+
+services:
+
+  cache:
+    container_name: windsurf-cache
+    image: redis:6.2-alpine
+    restart: always
+    volumes:
+      - windsurf-cache:/data
+    networks:
+      - windsurf
+
+  web:
+    container_name: windsurf
+    build: .
+    command: bash -c "sleep infinity"
+    volumes:
+      - .:/code
+    ports:
+      - "8000:8000"
+    depends_on:
+      - cache
+    environment:
+      - PYTHONUNBUFFERED=1
+      - PYTHONDONTWRITEBYTECODE=1
+      - PYTHONDEVMODE=1
+      - REDIS_URL=redis://cache:6379/0
+    env_file:
+      - .env
+    networks:
+      - windsurf
+
+networks:
+  windsurf:
+
+volumes:
+  windsurf-cache:
