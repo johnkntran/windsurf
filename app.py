@@ -1,10 +1,10 @@
 """
-FastAPI application for the RAG pipeline.
+FastAPI application for the RAG pipeline and tools demonstration.
 """
 import os
 from pathlib import Path
 
-from fastapi import FastAPI, HTTPException, UploadFile, File
+from fastapi import FastAPI, HTTPException, UploadFile, File, Depends
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 
@@ -12,9 +12,19 @@ from rag.document_processor import DocumentProcessor
 from rag.rag_pipeline import RAGPipeline
 from rag.vector_store import VectorStore
 
+# Import tools demo
+from tools.router import router as tools_router
+
 
 # Initialize FastAPI app
-app = FastAPI(title="RAG Pipeline API")
+app = FastAPI(
+    title="RAG Pipeline & Tools API",
+    description="API for RAG pipeline and tools demonstration",
+    version="1.0.0"
+)
+
+# Include the tools router
+app.include_router(tools_router)
 
 # Enable CORS
 app.add_middleware(
