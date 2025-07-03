@@ -14,6 +14,21 @@ services:
     networks:
       - windsurf
 
+  database:
+    container_name: windsurf-database
+    image: pgvector/pgvector:pg16
+    restart: always
+    environment:
+      - POSTGRES_USER=langchain
+      - POSTGRES_PASSWORD=langchain
+      - POSTGRES_DB=langchain
+    volumes:
+      - windsurf-database:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    networks:
+      - windsurf
+
   web:
     container_name: windsurf
     build:
@@ -44,6 +59,8 @@ networks:
 volumes:
   windsurf-cache:
     name: windsurf-cache
+  windsurf-database:
+    name: windsurf-database
 
 secrets:
   env:
