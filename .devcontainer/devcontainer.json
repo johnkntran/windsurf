@@ -47,7 +47,8 @@
 		},
 		"windsurf": {
 			"extensions": [
-				"Codeium.windsurfPyright"
+				"Codeium.windsurfPyright",
+				"Redis.redis-for-vscode"
 			],
 			"settings": {}
 		}
