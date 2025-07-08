@@ -38,8 +38,8 @@ retriever_evaluator.evaluate(
 
 # ---------------------------------------------------------------------------- #
 
-from llama_index.core.llms import MockLLM, MockEmbedding
-from llama_index.core import Settings
+from llama_index.core.llms import MockLLM
+from llama_index.core import MockEmbedding, Settings
 
 # use a mock llm globally
 Settings.llm = MockLLM(max_tokens=256)
