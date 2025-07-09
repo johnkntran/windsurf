@@ -9,7 +9,10 @@ import os
 
 openai.api_key = os.environ["OPENAI_API_KEY"]
 
-documents = SimpleDirectoryReader("./data/paul_graham").load_data()
+documents = SimpleDirectoryReader(
+    input_files=["./data/barack-obama-a-more-perfect-union.txt"]
+).load_data()
+
 connection_string = os.environ["DATABASE_URL"]
 db_name = "llamaindex"
 conn = psycopg2.connect(connection_string)
