@@ -38,7 +38,7 @@ vector_store = PGVectorStore.from_params(
     password=url.password,
     port=url.port,
     user=url.username,
-    table_name="paul_graham_essay",
+    table_name="barack_obama",
     embed_dim=1536,  # openai embedding dimension
     hnsw_kwargs={
         "hnsw_m": 16,
@@ -60,12 +60,18 @@ index = VectorStoreIndex.from_documents(
 # B: For using existing index
 index = VectorStoreIndex.from_vector_store(vector_store=vector_store)
 
-query_engine = index.as_query_engine()
+query_engine = index.as_query_engine(similarity_top_k=7)
+retriever = index.as_retriever(similarity_top_k=7)
 
 # ---------------------------------------------------------------------------- #
 
-response = query_engine.query("What did the author do?")
+response = query_engine.query("What did Barack Obama say about Reverend Wright?")
 print(textwrap.fill(str(response), 100))
+
+nodes = retriever.retrieve("Tell me about Barack Obama's parents")
+for node in nodes:
+    print(node)
+    print('----------')
 
 # ---------------------------------------------------------------------------- #
 
