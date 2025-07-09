@@ -1,13 +1,18 @@
+from llama_index.llms.openai import OpenAI
+from llama_index.embeddings.openai import OpenAIEmbedding
+from llama_index.core.settings import Settings
+
+Settings.llm = OpenAI(model="gpt-4o-mini")
+Settings.embed_model = OpenAIEmbedding(model="text-embedding-3-small")
+
+# ---------------------------------------------------------------------------- #
+
 from llama_index.core import SimpleDirectoryReader, StorageContext
 from llama_index.core import VectorStoreIndex
 from llama_index.vector_stores.postgres import PGVectorStore
 import textwrap
-import openai
 import psycopg2
 import os
-
-
-openai.api_key = os.environ["OPENAI_API_KEY"]
 
 documents = SimpleDirectoryReader(
     input_files=["./data/barack-obama-a-more-perfect-union.txt"]
