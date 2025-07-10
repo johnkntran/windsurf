@@ -32,7 +32,7 @@ retriever = vector_store.as_retriever(
 
 
 def load_docs():
-    raw_documents = TextLoader('mark-carney-acceptance-speech.txt').load()
+    raw_documents = TextLoader('./data/mark-carney-acceptance-speech.txt').load()
     text_splitter = RecursiveCharacterTextSplitter(chunk_size=250, chunk_overlap=25)
     docs = text_splitter.split_documents(raw_documents)
     text_splitter = CharacterTextSplitter(chunk_size=250, chunk_overlap=25)
