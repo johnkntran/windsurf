@@ -3,9 +3,10 @@ from langchain_redis import RedisVectorStore
 from langchain_openai import OpenAIEmbeddings
 from langchain_core.documents import Document
 from redisvl.query.filter import Tag
+import os
 
 
-redis = Redis('cache')
+redis = Redis.from_url(os.environ['REDIS_URL'])
 v = store = vector_store = RedisVectorStore(
     index_name="langchain-demo",
     embeddings=OpenAIEmbeddings(),
@@ -39,15 +40,13 @@ from langchain_postgres.vectorstores import PGVector
 from langchain_core.documents import Document
 from langchain_openai import OpenAIEmbeddings
 from sqlalchemy.ext.asyncio import create_async_engine
+import os
 
-
-connection = "postgresql+psycopg://langchain:langchain@database:5432/langchain"
-collection_name = "my_docs"
 
 vector_store = PGVector(
     embeddings=OpenAIEmbeddings(),
-    collection_name=collection_name,
-    connection=connection,
+    collection_name="langchain-demo",
+    connection=os.environ['DATABASE_URL'],
     use_jsonb=True,
 )
 
@@ -79,11 +78,11 @@ retriever = vector_store.as_retriever(
 )
 retriever.invoke("thud")
 
-engine = create_async_engine(connection)
+engine = create_async_engine(os.environ['DATABASE_URL'])
 
 async_vector_store = PGVector(
     embeddings=OpenAIEmbeddings(),
-    collection_name=collection_name,
+    collection_name="langchain-demo",
     connection=engine,
     use_jsonb=True,
 )
