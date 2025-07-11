@@ -77,3 +77,37 @@ query_engine_tools = [
 query_engine = SubQuestionQueryEngine.from_defaults(
     query_engine_tools=query_engine_tools
 )
+
+# Putting It All Together: Agent #
+
+from llama_index.core.tools import FunctionTool
+from llama_index.llms.openai import OpenAI
+from llama_index.core.agent.workflow import ReActAgent, FunctionAgent
+from llama_index.core.tools import QueryEngineTool
+
+# define sample Tool
+def multiply(a: int, b: int) -> int:
+    """Multiply two integers and returns the result integer"""
+    return a * b
+
+# initialize llm
+llm = OpenAI(model="gpt-4o")
+
+# initialize agent
+agent = FunctionAgent(
+    tools=[multiply],
+    system_prompt="You are an agent that can invoke a tool for multiplication when assisting a user.",
+)
+
+query_engine_tools = [
+    QueryEngineTool.from_defaults(
+        query_engine=sql_agent,
+        name="sql_agent",
+        description="Agent that can execute SQL queries.",
+    ),
+]
+
+agent = FunctionAgent(
+    tools=query_engine_tools,
+    system_prompt="You are an agent that can invoke an agent for text-to-SQL execution.",
+)
