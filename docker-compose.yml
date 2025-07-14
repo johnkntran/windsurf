@@ -6,19 +6,50 @@ services:
     container_name: windsurf
     build:
       context: .
-      secrets:
-        - env
+      dockerfile: Dockerfile
     command: bash -c "sleep infinity"
     volumes:
       - .:/code
     ports:
       - "8000:8000"
+    depends_on:
+      - cache
+      - database
     environment:
       - PYTHONUNBUFFERED=1
       - PYTHONDONTWRITEBYTECODE=1
       - PYTHONDEVMODE=1
+      - REDIS_URL=redis://cache:6379/0
+      - DATABASE_URL=postgresql://postgres:postgres@database:5432/postgres
     env_file:
       - .env
+    networks:
+      - windsurf
+
+  database:
+    container_name: windsurf-database
+    image: pgvector/pgvector:pg16
+    restart: always
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=postgres
+    volumes:
+      - windsurf-database:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    networks:
+      - windsurf
+
+  cache:
+    container_name: windsurf-cache
+    image: redis/redis-stack:7.4.0-v5
+    restart: always
+    volumes:
+      - windsurf-cache:/data
+    ports:
+      - "6379:6379"
+      - "8001:8001"
     networks:
       - windsurf
 
@@ -26,6 +57,8 @@ networks:
   windsurf:
     name: windsurf
 
-secrets:
-  env:
-    file: .env
+volumes:
+  windsurf-cache:
+    name: windsurf-cache
+  windsurf-database:
+    name: windsurf-database

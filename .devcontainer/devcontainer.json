@@ -35,13 +35,14 @@
 		"vscode": {
 			"extensions": [
 				"ms-python.python",
+				"ms-python.vscode-pylance",
 				"ms-python.flake8",
-				"ms-python.mypy-type-checker",
-				"ms-python.debugpy"
+				"ms-python.debugpy",
+				"Codeium.codeium"
 			],
 			"settings": {
 				"flake8.args": [
-					"--extend-ignore=E501"
+					"--extend-ignore=E501,E722,E261,F401"
 				]
 			}
 		},
