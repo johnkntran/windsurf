@@ -1,4 +1,6 @@
-version: '3'
+version: '3.8'
+
+name: windsurf
 
 services:
 
@@ -16,11 +18,26 @@ services:
       - PYTHONUNBUFFERED=1
       - PYTHONDONTWRITEBYTECODE=1
       - PYTHONDEVMODE=1
+    depends_on:
+      - cache
     env_file:
       - .env
+    networks:
+      - windsurf
+
+  cache:
+    container_name: windsurf-cache
+    image: redis:8.0.3-alpine3.21
+    restart: always
+    volumes:
+      - windsurf-cache:/data
     networks:
       - windsurf
 
 networks:
   windsurf:
     name: windsurf
+
+volumes:
+  windsurf-cache:
+    name: windsurf-cache
