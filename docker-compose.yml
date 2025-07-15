@@ -30,8 +30,6 @@ services:
     restart: always
     volumes:
       - windsurf-cache:/data
-    ports:
-      - "8001:8001"
     networks:
       - windsurf
 
