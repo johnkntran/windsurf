@@ -18,6 +18,7 @@ services:
       - PYTHONUNBUFFERED=1
       - PYTHONDONTWRITEBYTECODE=1
       - PYTHONDEVMODE=1
+      - REDIS_URL=redis://cache:6379/0
     depends_on:
       - cache
     env_file:
