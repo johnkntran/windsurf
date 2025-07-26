@@ -1,1 +1,3 @@
 ipython
+langchain[anthropic]
+langgraph
